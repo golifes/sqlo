@@ -10,7 +10,7 @@ type db struct {
 	err    error
 }
 
-func NewDb(dns string) (d db, err error) {
+func Connect(dns string) (d db, err error) {
 	d = db{}
 	open, err := sql.Open("mysql", dns)
 	d.engine = open //连接数据库
