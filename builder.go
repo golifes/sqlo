@@ -50,7 +50,7 @@ func (d db) Or(fields ...string) db {
 func (d db) OrderBy(desc string) db {
 	var buf bytes.Buffer
 	buf.WriteString(d.s)
-	buf.WriteString(" order by ")
+	buf.WriteString("order by ")
 	buf.WriteString(desc)
 	d.s = buf.String()
 	return d
@@ -66,7 +66,7 @@ func (d db) Limit(ps, pn int) db {
 func (d db) Count(cols string) db {
 	var buf bytes.Buffer
 	buf.WriteString(d.s)
-	buf.WriteString(fmt.Sprintf(" count(%s) AS %s ", cols, string(cols[0])))
+	buf.WriteString(fmt.Sprintf("count(%s) AS %s ", cols, string(cols[0])))
 	d.s = buf.String()
 	return d
 }

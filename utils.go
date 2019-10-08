@@ -9,12 +9,12 @@ func andOr(d db, op string, fields ...string) db {
 	for _, v := range fields {
 		if len(fields)-1 != count {
 			buf.WriteString(v)
-			buf.WriteString(" = ? ")
+			buf.WriteString("= ? ")
 			buf.WriteString(op)
 
 		} else {
 			buf.WriteString(v)
-			buf.WriteString(" = ?  ")
+			buf.WriteString("= ? ")
 		}
 		count += 1
 	}
