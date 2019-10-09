@@ -58,6 +58,15 @@ func (d db) Union() db {
 	d.s = buf.String()
 	return d
 }
+
+func (d db) Alias(alias string) db {
+	var buf bytes.Buffer
+	buf.WriteString(d.s)
+	buf.WriteString(" as ")
+	buf.WriteString(alias)
+	d.s = buf.String()
+	return d
+}
 func (d db) string() string {
 	return d.s
 }

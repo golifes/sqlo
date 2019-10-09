@@ -15,7 +15,7 @@ func TestCount(t *testing.T) {
 
 	//select a,b from wx where name=? and age = ? order by id desc limit 0 ,10
 	sql := engine.
-		Select("a", "b").Count("c").From("wx").
+		Select("a", "b").Count("c").From("wx").Alias("w").
 		Where("id").
 		And("name", "age").
 		OrderBy("id desc").Limit(0, 10).
