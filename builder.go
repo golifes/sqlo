@@ -5,40 +5,6 @@ import (
 	"fmt"
 )
 
-func (d db) Select(cols ...string) db {
-	var buf bytes.Buffer
-	buf.WriteString(" select ")
-	count := 0
-	for _, v := range cols {
-		if len(cols)-1 != count {
-			buf.WriteString(v)
-			buf.WriteString(",")
-		} else {
-			buf.WriteString(v)
-		}
-	}
-	d.s = buf.String()
-	return d
-}
-
-func (d db) From(db string) db {
-	var buf bytes.Buffer
-	buf.WriteString(d.s)
-
-	buf.WriteString(" from ")
-	buf.WriteString(db)
-
-	d.s = buf.String()
-	return d
-}
-
-func (d db) Where() db {
-	var buf bytes.Buffer
-	buf.WriteString(d.s)
-	buf.WriteString(" where ")
-	d.s = buf.String()
-	return d
-}
 func (d db) And(fields ...string) db {
 	return andOr(d, " and ", fields...)
 }
@@ -67,6 +33,28 @@ func (d db) Count(cols string) db {
 	var buf bytes.Buffer
 	buf.WriteString(d.s)
 	buf.WriteString(fmt.Sprintf("count(%s) AS %s ", cols, string(cols[0])))
+	d.s = buf.String()
+	return d
+}
+
+/**
+SELECT * from runoob_tbl  WHERE runoob_author LIKE '%COM';
+("select * from t_ally where ally_name like ?", "%" + allyName + "%")
+*/
+func (d db) Like(col string) db {
+	var buf bytes.Buffer
+	buf.WriteString(d.s)
+	buf.WriteString("and ")
+	buf.WriteString(col)
+	buf.WriteString(" like ? ")
+	d.s = buf.String()
+	return d
+}
+
+func (d db) Union() db {
+	var buf bytes.Buffer
+	buf.WriteString(d.s)
+	buf.WriteString(" union ")
 	d.s = buf.String()
 	return d
 }
