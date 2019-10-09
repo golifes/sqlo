@@ -10,14 +10,7 @@ import (
 func (d db) Select(cols ...string) db {
 	var buf bytes.Buffer
 	buf.WriteString(" select ")
-	for index, v := range cols {
-		if len(cols)-1 != index {
-			buf.WriteString(v)
-			buf.WriteString(",")
-		} else {
-			buf.WriteString(v)
-		}
-	}
+	buf = RangeS(buf, "", cols...)
 	d.s = buf.String()
 	return d
 }
@@ -55,14 +48,8 @@ update 字段
 func (d db) Fields(fields ...string) db {
 	var buf bytes.Buffer
 	buf.WriteString(d.s)
-	for index, v := range fields {
-		buf.WriteString(v)
-		if index == len(fields)-1 {
-			buf.WriteString("=? ")
-		} else {
-			buf.WriteString("=?,")
-		}
-	}
+	buf = RangeS(buf, " =? ", fields...)
+
 	d.s = buf.String()
 	return d
 }

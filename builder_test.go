@@ -15,7 +15,7 @@ func TestCount(t *testing.T) {
 
 	//select a,b from wx where name=? and age = ? order by id desc limit 0 ,10
 	sql := engine.
-		Select("a", "b").Count("c").From("wx").Alias("w").
+		Select("a", "b").From("wx").Alias("w").
 		Where("id").
 		And("name", "age").
 		OrderBy("id desc").Limit(0, 10).
@@ -45,5 +45,11 @@ func TestDb_Insert(t *testing.T) {
 
 func TestDb_Like(t *testing.T) {
 	sql := engine.Select("a", "b").From("wx").Where("id").Like("name").string()
+	t.Log(sql)
+}
+
+// SELECT name, COUNT(*) FROM   employee_tbl GROUP BY name;
+func TestDb_GroupBy(t *testing.T) {
+	sql := engine.Select().Count("name").From("wx").GroupBy("name", "id").string()
 	t.Log(sql)
 }

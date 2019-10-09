@@ -13,3 +13,15 @@ func andOr(d db, op string, fields ...string) db {
 	d.s = buf.String()
 	return d
 }
+
+func RangeS(buf bytes.Buffer, op string, fields ...string) bytes.Buffer {
+
+	for index, v := range fields {
+		buf.WriteString(v)
+		buf.WriteString(op)
+		if index != len(fields)-1 {
+			buf.WriteString(",")
+		}
+	}
+	return buf
+}

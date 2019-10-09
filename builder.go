@@ -3,6 +3,7 @@ package sqlo
 import (
 	"bytes"
 	"fmt"
+	"strings"
 )
 
 func (d db) And(fields ...string) db {
@@ -32,7 +33,11 @@ func (d db) Limit(ps, pn int) db {
 func (d db) Count(cols string) db {
 	var buf bytes.Buffer
 	buf.WriteString(d.s)
-	buf.WriteString(fmt.Sprintf("count(%s) AS %s ", cols, string(cols[0])))
+	if strings.Contains(d.s, ",") {
+		buf.WriteString(fmt.Sprintf(",count(%s) AS %s ", cols, string(cols[0])))
+	} else {
+		buf.WriteString(fmt.Sprintf("count(%s) AS %s ", cols, string(cols[0])))
+	}
 	d.s = buf.String()
 	return d
 }
@@ -67,6 +72,16 @@ func (d db) Alias(alias string) db {
 	d.s = buf.String()
 	return d
 }
+
+func (d db) GroupBy(cols ...string) db {
+	var buf bytes.Buffer
+	buf.WriteString(d.s)
+	buf.WriteString(" group by ")
+	buf = RangeS(buf, "", cols...)
+	d.s = buf.String()
+	return d
+}
+
 func (d db) string() string {
 	return d.s
 }
