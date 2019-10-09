@@ -33,7 +33,9 @@ func (d db) Limit(ps, pn int) db {
 func (d db) Count(cols string) db {
 	var buf bytes.Buffer
 	buf.WriteString(d.s)
-	if strings.Contains(d.s, ",") {
+	s := strings.TrimSpace(d.s)
+	fmt.Println(s, len(s))
+	if len(s) > 6 {
 		buf.WriteString(fmt.Sprintf(",count(%s) AS %s ", cols, string(cols[0])))
 	} else {
 		buf.WriteString(fmt.Sprintf("count(%s) AS %s ", cols, string(cols[0])))

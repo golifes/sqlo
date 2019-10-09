@@ -50,6 +50,6 @@ func TestDb_Like(t *testing.T) {
 
 // SELECT name, COUNT(*) FROM   employee_tbl GROUP BY name;
 func TestDb_GroupBy(t *testing.T) {
-	sql := engine.Select().Count("name").From("wx").GroupBy("name", "id").string()
+	sql := engine.Select("id").Count("name").From("wx").GroupBy("name", "id").string()
 	t.Log(sql)
 }
