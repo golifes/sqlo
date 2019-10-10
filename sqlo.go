@@ -16,12 +16,12 @@ func (d db) Select(cols ...string) db {
 }
 
 // from
-func (d db) From(db string) db {
+func (d db) From(table string) db {
 	var buf bytes.Buffer
 	buf.WriteString(d.s)
 
 	buf.WriteString(" from ")
-	buf.WriteString(db)
+	buf.WriteString(table)
 
 	d.s = buf.String()
 	return d
