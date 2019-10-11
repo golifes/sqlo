@@ -53,3 +53,14 @@ func TestDb_GroupBy(t *testing.T) {
 	sql := engine.Select("id").Count("name").From("wx").GroupBy("name", "id").string()
 	t.Log(sql)
 }
+
+/**
+	SELECT a.runoob_id, a.runoob_author, b.runoob_count FROM runoob_tbl a
+INNER JOIN tcount_tbl b ON a.runoob_author = b.runoob_author;
+*/
+func TestDb_InnerJoin(t *testing.T) {
+	sql := engine.Select("a.runoob_id", "a.runoob_author", "b.runoob_count").
+		From(" runoob_tbl a").
+		InnerJoin("tcount_tbl b").On("a.runoob_author=", "b.runoob_author").And("a=", "b=").string()
+	t.Log(sql)
+}

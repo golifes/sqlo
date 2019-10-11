@@ -102,12 +102,28 @@ func (d db) InnerJoin(table string) db {
 	return d
 }
 
-func (d db) On(col string) db {
+func (d db) LeftJoin(table string) db {
 	var buf bytes.Buffer
-	buf = Join(buf, []string{d.s, col, "like ?"})
-	//buf.WriteString(d.s)
-	//buf.WriteString(col)
-	//buf.WriteString(" like ? ")
+	buf = Join(buf, []string{d.s, " left join ", table, " on "})
+	d.s = buf.String()
+	return d
+}
+
+func (d db) RightJoin(table string) db {
+	var buf bytes.Buffer
+	buf = Join(buf, []string{d.s, " right join ", table, " on "})
+	d.s = buf.String()
+	return d
+}
+
+/**
+v1 >= v2
+v2 <= v1
+条件前面加操作符号
+*/
+func (d db) On(v1 string, v2 string) db {
+	var buf bytes.Buffer
+	buf = Join(buf, []string{d.s, v1, v2})
 	d.s = buf.String()
 	return d
 }
