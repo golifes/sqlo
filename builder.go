@@ -121,9 +121,9 @@ v1 >= v2
 v2 <= v1
 条件前面加操作符号
 */
-func (d db) On(v1 string, v2 string) db {
+func (d db) On(col string) db {
 	var buf bytes.Buffer
-	buf = Join(buf, []string{d.s, v1, v2})
+	buf = Join(buf, []string{d.s, col, "?"})
 	d.s = buf.String()
 	return d
 }
