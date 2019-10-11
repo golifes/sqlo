@@ -18,10 +18,14 @@ func (d db) Select(cols ...string) db {
 // from
 func (d db) From(table string) db {
 	var buf bytes.Buffer
-	buf.WriteString(d.s)
 
-	buf.WriteString(" from ")
-	buf.WriteString(table)
+	buf = Join(buf, []string{d.s, " from ", table})
+
+	//
+	//buf.WriteString(d.s)
+	//
+	//buf.WriteString(" from ")
+	//buf.WriteString(table)
 
 	d.s = buf.String()
 	return d
@@ -30,8 +34,12 @@ func (d db) From(table string) db {
 //where
 func (d db) Where(col string) db {
 	var buf bytes.Buffer
-	buf.WriteString(d.s)
-	buf.WriteString(" where ")
+
+	buf = Join(buf, []string{d.s, " where "})
+
+	//
+	//buf.WriteString(d.s)
+	//buf.WriteString(" where ")
 
 	col = strings.TrimSpace(col)
 	if col != "" {

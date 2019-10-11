@@ -16,16 +16,17 @@ func (d db) Or(fields ...string) db {
 
 func (d db) OrderBy(desc string) db {
 	var buf bytes.Buffer
-	buf.WriteString(d.s)
-	buf.WriteString("order by ")
-	buf.WriteString(desc)
+	buf = Join(buf, []string{d.s, " order by ", desc})
+
+	//buf.WriteString(d.s)
+	//buf.WriteString("order by ")
+	//buf.WriteString(desc)
 	d.s = buf.String()
 	return d
 }
 func (d db) Limit(ps, pn int) db {
 	var buf bytes.Buffer
-	buf.WriteString(d.s)
-	buf.WriteString(fmt.Sprintf(" limit %d, %d", ps, pn))
+	buf = Join(buf, []string{d.s, fmt.Sprintf(" limit %d, %d", ps, pn)})
 	d.s = buf.String()
 	return d
 }
@@ -50,36 +51,63 @@ SELECT * from runoob_tbl  WHERE runoob_author LIKE '%COM';
 */
 func (d db) Like(col string) db {
 	var buf bytes.Buffer
-	buf.WriteString(d.s)
-	buf.WriteString("and ")
-	buf.WriteString(col)
-	buf.WriteString(" like ? ")
+	buf = Join(buf, []string{d.s, " and ", col, " like ? "})
+
+	//buf.WriteString(d.s)
+	//buf.WriteString("and ")
+	//buf.WriteString(col)
+	//buf.WriteString(" like ? ")
 	d.s = buf.String()
 	return d
 }
 
 func (d db) Union() db {
 	var buf bytes.Buffer
-	buf.WriteString(d.s)
-	buf.WriteString(" union ")
+	buf = Join(buf, []string{d.s, " union "})
+	//
+	//buf.WriteString(d.s)
+	//buf.WriteString(" union ")
 	d.s = buf.String()
 	return d
 }
 
 func (d db) Alias(alias string) db {
 	var buf bytes.Buffer
-	buf.WriteString(d.s)
-	buf.WriteString(" as ")
-	buf.WriteString(alias)
+	buf = Join(buf, []string{d.s, " as ", alias})
+	//
+	//
+	//buf.WriteString(d.s)
+	//buf.WriteString(" as ")
+	//buf.WriteString(alias)
 	d.s = buf.String()
 	return d
 }
 
 func (d db) GroupBy(cols ...string) db {
 	var buf bytes.Buffer
-	buf.WriteString(d.s)
-	buf.WriteString(" group by ")
+	buf = Join(buf, []string{d.s, " group by "})
 	buf = RangeS(buf, "", cols...)
+	d.s = buf.String()
+	return d
+}
+
+/**
+SELECT a.runoob_id, a.runoob_author, b.runoob_count FROM runoob_tbl a
+INNER JOIN tcount_tbl b ON a.runoob_author = b.runoob_author;
+*/
+func (d db) InnerJoin(table string) db {
+	var buf bytes.Buffer
+	buf = Join(buf, []string{d.s, " inner join ", table, " on "})
+	d.s = buf.String()
+	return d
+}
+
+func (d db) On(col string) db {
+	var buf bytes.Buffer
+	buf = Join(buf, []string{d.s, col, "like ?"})
+	//buf.WriteString(d.s)
+	//buf.WriteString(col)
+	//buf.WriteString(" like ? ")
 	d.s = buf.String()
 	return d
 }

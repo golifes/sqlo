@@ -25,3 +25,17 @@ func RangeS(buf bytes.Buffer, op string, fields ...string) bytes.Buffer {
 	}
 	return buf
 }
+
+/**
+var buf bytes.Buffer
+buf.WriteString(d.s)
+buf.WriteString(col)
+buf.WriteString(" like ? ")
+*/
+
+func Join(buf bytes.Buffer, cols []string) bytes.Buffer {
+	for _, v := range cols {
+		buf.WriteString(v)
+	}
+	return buf
+}
