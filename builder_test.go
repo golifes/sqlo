@@ -21,6 +21,11 @@ func TestCount(t *testing.T) {
 		OrderBy("id desc").Limit(0, 10).
 		String()
 	t.Log(sql)
+	//两种执行sql的方式
+	//sqlo封装的query
+	engine.Query(sql, "aaa", "bbb")
+	//database/sql原生的query
+	engine.DB().Query(sql, "aaa", "bbb")
 }
 
 func TestDb_Delete(t *testing.T) {
