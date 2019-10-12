@@ -128,6 +128,6 @@ func (e Engine) On(col string) Engine {
 	return e
 }
 
-func (e Engine) string() string {
+func (e Engine) String() string {
 	return e.s
 }
