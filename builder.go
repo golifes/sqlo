@@ -6,114 +6,114 @@ import (
 	"strings"
 )
 
-func (d db) And(fields ...string) db {
-	return andOr(d, " and ", fields...)
+func (e Engine) And(fields ...string) Engine {
+	return andOr(e, " and ", fields...)
 }
 
-func (d db) Or(fields ...string) db {
-	return andOr(d, "or", fields...)
+func (e Engine) Or(fields ...string) Engine {
+	return andOr(e, "or", fields...)
 }
 
-func (d db) OrderBy(desc string) db {
+func (e Engine) OrderBy(desc string) Engine {
 	var buf bytes.Buffer
-	buf = Join(buf, []string{d.s, " order by ", desc})
+	buf = Join(buf, []string{e.s, " order by ", desc})
 
-	//buf.WriteString(d.s)
+	//buf.WriteString(e.s)
 	//buf.WriteString("order by ")
 	//buf.WriteString(desc)
-	d.s = buf.String()
-	return d
+	e.s = buf.String()
+	return e
 }
-func (d db) Limit(ps, pn int) db {
+func (e Engine) Limit(ps, pn int) Engine {
 	var buf bytes.Buffer
-	buf = Join(buf, []string{d.s, fmt.Sprintf(" limit %d, %d", ps, pn)})
-	d.s = buf.String()
-	return d
+	buf = Join(buf, []string{e.s, fmt.Sprintf(" limit %d, %d", ps, pn)})
+	e.s = buf.String()
+	return e
 }
 
-func (d db) Count(cols string) db {
+func (e Engine) Count(cols string) Engine {
 	var buf bytes.Buffer
-	buf.WriteString(d.s)
-	s := strings.TrimSpace(d.s)
+	buf.WriteString(e.s)
+	s := strings.TrimSpace(e.s)
 	fmt.Println(s, len(s))
 	if len(s) > 6 {
 		buf.WriteString(fmt.Sprintf(",count(%s) AS %s ", cols, string(cols[0])))
 	} else {
 		buf.WriteString(fmt.Sprintf("count(%s) AS %s ", cols, string(cols[0])))
 	}
-	d.s = buf.String()
-	return d
+	e.s = buf.String()
+	return e
 }
 
 /**
 SELECT * from runoob_tbl  WHERE runoob_author LIKE '%COM';
 ("select * from t_ally where ally_name like ?", "%" + allyName + "%")
 */
-func (d db) Like(col string) db {
+func (e Engine) Like(col string) Engine {
 	var buf bytes.Buffer
-	buf = Join(buf, []string{d.s, " and ", col, " like ? "})
+	buf = Join(buf, []string{e.s, " and ", col, " like ? "})
 
-	//buf.WriteString(d.s)
+	//buf.WriteString(e.s)
 	//buf.WriteString("and ")
 	//buf.WriteString(col)
 	//buf.WriteString(" like ? ")
-	d.s = buf.String()
-	return d
+	e.s = buf.String()
+	return e
 }
 
-func (d db) Union() db {
+func (e Engine) Union() Engine {
 	var buf bytes.Buffer
-	buf = Join(buf, []string{d.s, " union "})
+	buf = Join(buf, []string{e.s, " union "})
 	//
-	//buf.WriteString(d.s)
+	//buf.WriteString(e.s)
 	//buf.WriteString(" union ")
-	d.s = buf.String()
-	return d
+	e.s = buf.String()
+	return e
 }
 
-func (d db) Alias(alias string) db {
+func (e Engine) Alias(alias string) Engine {
 	var buf bytes.Buffer
-	buf = Join(buf, []string{d.s, " as ", alias})
+	buf = Join(buf, []string{e.s, " as ", alias})
 	//
 	//
-	//buf.WriteString(d.s)
+	//buf.WriteString(e.s)
 	//buf.WriteString(" as ")
 	//buf.WriteString(alias)
-	d.s = buf.String()
-	return d
+	e.s = buf.String()
+	return e
 }
 
-func (d db) GroupBy(cols ...string) db {
+func (e Engine) GroupBy(cols ...string) Engine {
 	var buf bytes.Buffer
-	buf = Join(buf, []string{d.s, " group by "})
+	buf = Join(buf, []string{e.s, " group by "})
 	buf = RangeS(buf, "", cols...)
-	d.s = buf.String()
-	return d
+	e.s = buf.String()
+	return e
 }
 
 /**
 SELECT a.runoob_id, a.runoob_author, b.runoob_count FROM runoob_tbl a
 INNER JOIN tcount_tbl b ON a.runoob_author = b.runoob_author;
 */
-func (d db) InnerJoin(table string) db {
+func (e Engine) InnerJoin(table string) Engine {
 	var buf bytes.Buffer
-	buf = Join(buf, []string{d.s, " inner join ", table, " on "})
-	d.s = buf.String()
-	return d
+	buf = Join(buf, []string{e.s, " inner join ", table, " on "})
+	e.s = buf.String()
+	return e
 }
 
-func (d db) LeftJoin(table string) db {
+func (e Engine) LeftJoin(table string) Engine {
 	var buf bytes.Buffer
-	buf = Join(buf, []string{d.s, " left join ", table, " on "})
-	d.s = buf.String()
-	return d
+	buf = Join(buf, []string{e.s, " left join ", table, " on "})
+	e.s = buf.String()
+	return e
 }
 
-func (d db) RightJoin(table string) db {
+func (e Engine) RightJoin(table string) Engine {
 	var buf bytes.Buffer
-	buf = Join(buf, []string{d.s, " right join ", table, " on "})
-	d.s = buf.String()
-	return d
+	buf = Join(buf, []string{e.s, " right join ", table, " on "})
+	e.s = buf.String()
+	return e
 }
 
 /**
@@ -121,13 +121,13 @@ v1 >= v2
 v2 <= v1
 条件前面加操作符号
 */
-func (d db) On(col string) db {
+func (e Engine) On(col string) Engine {
 	var buf bytes.Buffer
-	buf = Join(buf, []string{d.s, col, "?"})
-	d.s = buf.String()
-	return d
+	buf = Join(buf, []string{e.s, col, "?"})
+	e.s = buf.String()
+	return e
 }
 
-func (d db) string() string {
-	return d.s
+func (e Engine) string() string {
+	return e.s
 }

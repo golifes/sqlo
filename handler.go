@@ -4,12 +4,12 @@ package sqlo
 select
 */
 type Selecter interface {
-	Select(cols ...string) db //select
-	From(table string) db     //from db
-	Where(col string) db
+	Select(cols ...string) Engine //select
+	From(table string) Engine     //from Engine
+	Where(col string) Engine
 }
 
 type Inserter interface {
-	Insert(table string) db
-	Cols(cols ...string) db
+	Insert(table string) Engine
+	Cols(cols ...string) Engine
 }

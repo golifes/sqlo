@@ -7,38 +7,38 @@ import (
 )
 
 //select
-func (d db) Select(cols ...string) db {
+func (e Engine) Select(cols ...string) Engine {
 	var buf bytes.Buffer
 	buf.WriteString(" select ")
 	buf = RangeS(buf, "", cols...)
-	d.s = buf.String()
-	return d
+	e.s = buf.String()
+	return e
 }
 
 // from
-func (d db) From(table string) db {
+func (e Engine) From(table string) Engine {
 	var buf bytes.Buffer
 
-	buf = Join(buf, []string{d.s, " from ", table})
+	buf = Join(buf, []string{e.s, " from ", table})
 
 	//
-	//buf.WriteString(d.s)
+	//buf.WriteString(e.s)
 	//
 	//buf.WriteString(" from ")
 	//buf.WriteString(table)
 
-	d.s = buf.String()
-	return d
+	e.s = buf.String()
+	return e
 }
 
 //where
-func (d db) Where(col string) db {
+func (e Engine) Where(col string) Engine {
 	var buf bytes.Buffer
 
-	buf = Join(buf, []string{d.s, " where "})
+	buf = Join(buf, []string{e.s, " where "})
 
 	//
-	//buf.WriteString(d.s)
+	//buf.WriteString(e.s)
 	//buf.WriteString(" where ")
 
 	col = strings.TrimSpace(col)
@@ -46,28 +46,28 @@ func (d db) Where(col string) db {
 		buf.WriteString(col)
 		buf.WriteString("=? ")
 	}
-	d.s = buf.String()
-	return d
+	e.s = buf.String()
+	return e
 }
 
 /**
 update 字段
 */
-func (d db) Fields(fields ...string) db {
+func (e Engine) Fields(fields ...string) Engine {
 	var buf bytes.Buffer
-	buf.WriteString(d.s)
+	buf.WriteString(e.s)
 	buf = RangeS(buf, " =? ", fields...)
 
-	d.s = buf.String()
-	return d
+	e.s = buf.String()
+	return e
 }
 
 /**
 insert 时候的table 字段
 */
-func (d db) Cols(cols ...string) db {
+func (e Engine) Cols(cols ...string) Engine {
 	var buf bytes.Buffer
-	buf.WriteString(d.s)
+	buf.WriteString(e.s)
 	buf.WriteString(" (")
 	place := ""
 	for index, v := range cols {
@@ -83,6 +83,6 @@ func (d db) Cols(cols ...string) db {
 	buf.WriteString(") values (")
 	buf.WriteString(place)
 	buf.WriteString(")")
-	d.s = buf.String()
-	return d
+	e.s = buf.String()
+	return e
 }

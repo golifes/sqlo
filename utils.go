@@ -2,16 +2,16 @@ package sqlo
 
 import "bytes"
 
-func andOr(d db, op string, fields ...string) db {
+func andOr(e Engine, op string, fields ...string) Engine {
 	var buf bytes.Buffer
-	buf.WriteString(d.s)
+	buf.WriteString(e.s)
 	for _, v := range fields {
 		buf.WriteString(op)
 		buf.WriteString(v)
 		buf.WriteString("? ")
 	}
-	d.s = buf.String()
-	return d
+	e.s = buf.String()
+	return e
 }
 
 func RangeS(buf bytes.Buffer, op string, fields ...string) bytes.Buffer {
@@ -28,7 +28,7 @@ func RangeS(buf bytes.Buffer, op string, fields ...string) bytes.Buffer {
 
 /**
 var buf bytes.Buffer
-buf.WriteString(d.s)
+buf.WriteString(e.s)
 buf.WriteString(col)
 buf.WriteString(" like ? ")
 */

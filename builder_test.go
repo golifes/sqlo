@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-var engine db
+var engine Engine
 
 func init() {
 	engine, _ = Connect("root:123@tcp(127.0.0.1)/demo?charset=utf8&parseTime=True&loc=Local")
@@ -61,6 +61,6 @@ INNER JOIN tcount_tbl b ON a.runoob_author = b.runoob_author;
 func TestDb_InnerJoin(t *testing.T) {
 	sql := engine.Select("a.runoob_id", "a.runoob_author", "b.runoob_count").
 		From(" runoob_tbl a").
-		InnerJoin("tcount_tbl b").On("a.runoob_author=", "b.runoob_author").And("a=", "b=").string()
+		InnerJoin("tcount_tbl b").On("a.runoob_author=").And("a=", "b=").string()
 	t.Log(sql)
 }
