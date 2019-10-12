@@ -29,3 +29,7 @@ func (e *Engine) Close() error {
 func (e *Engine) Query(query string, args ...interface{}) (*sql.Rows, error) {
 	return e.db.Query(query, args)
 }
+
+func (e *Engine) DB() *sql.DB {
+	return e.db
+}
