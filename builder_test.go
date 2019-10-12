@@ -19,7 +19,7 @@ func TestCount(t *testing.T) {
 		Where("id").
 		And("name", "age").
 		OrderBy("id desc").Limit(0, 10).
-		string()
+		String()
 	t.Log(sql)
 }
 
@@ -28,29 +28,29 @@ func TestDb_Delete(t *testing.T) {
 		Delete("wx").
 		Where("id").
 		And("name").
-		string()
+		String()
 	t.Log(sql)
 }
 
 func TestDb_Update(t *testing.T) {
-	sql := engine.Update("wx").Fields("a", "b").Where("c").string()
+	sql := engine.Update("wx").Fields("a", "b").Where("c").String()
 	t.Log(sql)
 }
 func TestDb_Insert(t *testing.T) {
 	sql := engine.Insert("wx").
 		Cols("a", "b").
-		string()
+		String()
 	t.Log(sql)
 }
 
 func TestDb_Like(t *testing.T) {
-	sql := engine.Select("a", "b").From("wx").Where("id").Like("name").string()
+	sql := engine.Select("a", "b").From("wx").Where("id").Like("name").String()
 	t.Log(sql)
 }
 
 // SELECT name, COUNT(*) FROM   employee_tbl GROUP BY name;
 func TestDb_GroupBy(t *testing.T) {
-	sql := engine.Select("id").Count("name").From("wx").GroupBy("name", "id").string()
+	sql := engine.Select("id").Count("name").From("wx").GroupBy("name", "id").String()
 	t.Log(sql)
 }
 
@@ -61,6 +61,6 @@ INNER JOIN tcount_tbl b ON a.runoob_author = b.runoob_author;
 func TestDb_InnerJoin(t *testing.T) {
 	sql := engine.Select("a.runoob_id", "a.runoob_author", "b.runoob_count").
 		From(" runoob_tbl a").
-		InnerJoin("tcount_tbl b").On("a.runoob_author=").And("a=", "b=").string()
+		InnerJoin("tcount_tbl b").On("a.runoob_author=").And("a=", "b=").String()
 	t.Log(sql)
 }
