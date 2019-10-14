@@ -71,6 +71,6 @@ func TestDb_InnerJoin(t *testing.T) {
 }
 
 func TestEngine_Insert(t *testing.T) {
-	sql := engine.Insert("wx").Cols("a", "b").AddNowTime([]string{"ctime", "mtime"}, "").String()
+	sql := engine.Insert("wx").Cols("a", "b").AddNowTime([]string{"ctime", "mtime"}).String()
 	t.Log(sql)
 }

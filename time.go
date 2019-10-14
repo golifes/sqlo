@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
-	"time"
 )
 
 /**
@@ -27,7 +26,7 @@ func (e Engine) AddDate(time string, day int) Engine {
 
 //insert into table ( name,pwd ,id ) values( ?,?,?)
 //insert into  wx (a,b) values (?,?)
-func (e Engine) AddNowTime(cols []string, format string) Engine {
+func (e Engine) AddNowTime(cols []string) Engine {
 	var buf bytes.Buffer
 	key := ""
 	for _, v := range cols {
@@ -38,14 +37,10 @@ func (e Engine) AddNowTime(cols []string, format string) Engine {
 	value := ""
 
 	for i := 0; i < len(cols); i++ {
-		if format == "" {
-			value += fmt.Sprintf(", '%s' ", time.Now().Local())
-		} else {
-			value += fmt.Sprintf(", '%s' ", time.Now().Local().Format(format))
-		}
+		value += fmt.Sprintf(",%s", "now()")
 	}
 
-	e.s = strings.ReplaceAll(e.s, "?)", fmt.Sprintf("?%s )", value))
+	e.s = strings.ReplaceAll(e.s, "?)", fmt.Sprintf("?%s)", value))
 	buf.WriteString(e.s)
 	e.s = buf.String()
 	return e
