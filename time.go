@@ -2,7 +2,10 @@ package sqlo
 
 import (
 	"bytes"
+	"fmt"
 	"strconv"
+	"strings"
+	"time"
 )
 
 /**
@@ -18,6 +21,20 @@ func (e Engine) AddDate(time string, day int) Engine {
 	buf.WriteString(", INTERVAL  ")
 	buf.WriteString(strconv.Itoa(day))
 	buf.WriteString("DAY) ")
+	e.s = buf.String()
+	return e
+}
+
+//insert into table ( name,pwd ,id ) values( ?,?,?)
+func (e Engine) AddNowTime(col string, format string) Engine {
+	var buf bytes.Buffer
+	e.s = strings.ReplaceAll(e.s, ") values", fmt.Sprintf(",%s ) values", col))
+	if format == "" {
+		e.s = strings.ReplaceAll(e.s, "?)", fmt.Sprintf("?,%s ) values", time.Now().Local()))
+	} else {
+		e.s = strings.ReplaceAll(e.s, "?)", fmt.Sprintf("?,%s ) values", time.Now().Format(format)))
+	}
+	buf.WriteString(e.s)
 	e.s = buf.String()
 	return e
 }

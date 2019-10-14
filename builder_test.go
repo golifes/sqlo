@@ -69,3 +69,8 @@ func TestDb_InnerJoin(t *testing.T) {
 		InnerJoin("tcount_tbl b").On("a.runoob_author=").And("a=", "b=").String()
 	t.Log(sql)
 }
+
+func TestEngine_Insert(t *testing.T) {
+	sql := engine.Insert("wx").Cols("a", "b").AddNowTime("ctime", "").String()
+	t.Log(sql)
+}
