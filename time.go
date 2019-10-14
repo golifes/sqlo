@@ -26,14 +26,26 @@ func (e Engine) AddDate(time string, day int) Engine {
 }
 
 //insert into table ( name,pwd ,id ) values( ?,?,?)
-func (e Engine) AddNowTime(col string, format string) Engine {
+//insert into  wx (a,b) values (?,?)
+func (e Engine) AddNowTime(cols []string, format string) Engine {
 	var buf bytes.Buffer
-	e.s = strings.ReplaceAll(e.s, ") values", fmt.Sprintf(",%s ) values", col))
-	if format == "" {
-		e.s = strings.ReplaceAll(e.s, "?)", fmt.Sprintf("?,%s ) values", time.Now().Local()))
-	} else {
-		e.s = strings.ReplaceAll(e.s, "?)", fmt.Sprintf("?,%s ) values", time.Now().Format(format)))
+	key := ""
+	for _, v := range cols {
+		key += fmt.Sprintf(",%s", v)
 	}
+	e.s = strings.ReplaceAll(e.s, ") values", fmt.Sprintf("%s) values", key))
+
+	value := ""
+
+	for i := 0; i < len(cols); i++ {
+		if format == "" {
+			value += fmt.Sprintf(",%s", time.Now().Local())
+		} else {
+			value += fmt.Sprintf(",%s", time.Now().Local().Format(format))
+		}
+	}
+
+	e.s = strings.ReplaceAll(e.s, "?)", fmt.Sprintf("?%s )", value))
 	buf.WriteString(e.s)
 	e.s = buf.String()
 	return e
