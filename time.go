@@ -39,9 +39,9 @@ func (e Engine) AddNowTime(cols []string, format string) Engine {
 
 	for i := 0; i < len(cols); i++ {
 		if format == "" {
-			value += fmt.Sprintf(",%s", time.Now().Local())
+			value += fmt.Sprintf(", '%s' ", time.Now().Local())
 		} else {
-			value += fmt.Sprintf(",%s", time.Now().Local().Format(format))
+			value += fmt.Sprintf(", '%s' ", time.Now().Local().Format(format))
 		}
 	}
 
