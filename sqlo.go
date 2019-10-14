@@ -44,7 +44,6 @@ func (e Engine) Where(col string) Engine {
 	col = strings.TrimSpace(col)
 	if col != "" {
 		buf.WriteString(col)
-		buf.WriteString("=? ")
 	}
 	e.s = buf.String()
 	return e

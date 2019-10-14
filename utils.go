@@ -8,7 +8,6 @@ func andOr(e Engine, op string, fields ...string) Engine {
 	for _, v := range fields {
 		buf.WriteString(op)
 		buf.WriteString(v)
-		buf.WriteString("? ")
 	}
 	e.s = buf.String()
 	return e
