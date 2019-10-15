@@ -17,15 +17,20 @@ func TestCount(t *testing.T) {
 	sql := engine.
 		Select("a", "b").From("wx").Alias("w").
 		Where("id").
-		And("name", "age").
+		And("=", "name", "age").
 		OrderBy("id desc").Limit(0, 10).
 		String()
 	t.Log(sql)
 	//两种执行sql的方式
-	//sqlo封装的query
-	engine.Query(sql, "aaa", "bbb")
-	//database/sql原生的query
-	engine.DB().Query(sql, "aaa", "bbb")
+	////sqlo封装的query
+	//engine.Query(sql, "aaa", "bbb")
+	////database/sql原生的query
+	//engine.DB().Query(sql, "aaa", "bbb")
+}
+
+func TestEngine_Where(t *testing.T) {
+	sql := engine.Select("a").From("wx").Where("=?", "b", "c")
+	t.Log(sql)
 }
 
 func TestDb_Delete(t *testing.T) {

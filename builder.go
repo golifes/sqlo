@@ -6,12 +6,12 @@ import (
 	"strings"
 )
 
-func (e Engine) And(fields ...string) Engine {
-	return andOr(e, " and ", fields...)
+func (e Engine) And(c string, fields ...string) Engine {
+	return andOr(e, " and ", c, fields...)
 }
 
-func (e Engine) Or(fields ...string) Engine {
-	return andOr(e, "or", fields...)
+func (e Engine) Or(c string, fields ...string) Engine {
+	return andOr(e, "or", c, fields...)
 }
 
 func (e Engine) OrderBy(desc string) Engine {

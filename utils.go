@@ -2,12 +2,13 @@ package sqlo
 
 import "bytes"
 
-func andOr(e Engine, op string, fields ...string) Engine {
+func andOr(e Engine, op, c string, fields ...string) Engine {
 	var buf bytes.Buffer
 	buf.WriteString(e.s)
 	for _, v := range fields {
 		buf.WriteString(op)
 		buf.WriteString(v)
+		buf.WriteString(c)
 		buf.WriteString("? ")
 	}
 	e.s = buf.String()

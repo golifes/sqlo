@@ -3,7 +3,6 @@ package sqlo
 import (
 	"bytes"
 	"fmt"
-	"strings"
 )
 
 //select
@@ -32,20 +31,47 @@ func (e Engine) From(table string) Engine {
 }
 
 //where
-func (e Engine) Where(col string) Engine {
+//func (e Engine) Where(col string) Engine {
+//	var buf bytes.Buffer
+//
+//	buf = Join(buf, []string{e.s, " where "})
+//
+//	//
+//	//buf.WriteString(e.s)
+//	//buf.WriteString(" where ")
+//
+//	col = strings.TrimSpace(col)
+//	if col != "" {
+//		buf.WriteString(col)
+//		buf.WriteString("=? ")
+//	}
+//	e.s = buf.String()
+//	return e
+//}
+
+func (e Engine) Where(c string, col ...string) Engine {
 	var buf bytes.Buffer
 
 	buf = Join(buf, []string{e.s, " where "})
-
-	//
-	//buf.WriteString(e.s)
-	//buf.WriteString(" where ")
-
-	col = strings.TrimSpace(col)
-	if col != "" {
-		buf.WriteString(col)
-		buf.WriteString("=? ")
+	if len(col) == 1 {
+		buf.WriteString(col[0])
+		buf.WriteString(c)
+	} else {
+		for k, v := range col {
+			buf.WriteString(v)
+			buf.WriteString(c)
+			if len(col)-1 != k {
+				buf.WriteString(" and ")
+			}
+		}
 	}
+	//buf = RangeS(buf, c, col...)
+
+	//col = strings.TrimSpace(col)
+	//if col != "" {
+	//	buf.WriteString(col)
+	//	buf.WriteString("=? ")
+	//}
 	e.s = buf.String()
 	return e
 }
