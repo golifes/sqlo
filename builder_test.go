@@ -1,14 +1,14 @@
 package sqlo
 
 import (
+	"fmt"
 	"testing"
 )
 
 var engine Engine
 
-func init() {
-	engine, _ = Connect("root:123@tcp(127.0.0.1)/demo?charset=utf8&parseTime=True&loc=Local")
-
+func Init() {
+	engine, _ = Connect("root:abc@tcp(127.0.0.1)/demo?charset=utf8&parseTime=True&loc=Local")
 }
 
 func TestCount(t *testing.T) {
@@ -76,6 +76,10 @@ func TestDb_InnerJoin(t *testing.T) {
 }
 
 func TestEngine_Insert(t *testing.T) {
-	sql := engine.Insert("wx").Cols("a", "b").AddNowTime([]string{"ctime", "mtime"}).String()
+	Init()
+	sql := engine.Insert("wx").Cols("name", "pwd").AddNowTime([]string{"ctime", "mtime"}).String()
+	fmt.Println(engine.db)
 	t.Log(sql)
+	result, err := engine.DB().Exec(sql, "xiaohan", "111")
+	t.Log(result, err)
 }
